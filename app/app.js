@@ -9,6 +9,14 @@ app.use((req, res) => {
   res.send(`Hello from node. It's ${Date.now()}\n`);
 });
 
-app.listen(port,  () => {
+const server = app.listen(port,  () => {
   console.log(`Listening on port: ${port}`);
 });
+
+const handProcessTermination = (signal) => {
+  console.info(`Service is being shut down by signal: ${signal}`);
+  server.close();
+  process.exit();
+};
+process.on('SIGTERM', handProcessTermination);
+process.on('SIGINT', handProcessTermination);
